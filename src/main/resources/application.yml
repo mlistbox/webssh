@@ -6,7 +6,7 @@ server:
   servlet:
     context-path: /
   ssl:
-    key-store: classpath:keystore.p12
+    key-store: classpath:tomcat.p12
     key-store-password: Kjb@llh2020
     keyStoreType: PKCS12
     keyAlias: tomcat

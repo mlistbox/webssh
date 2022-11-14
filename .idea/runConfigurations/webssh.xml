@@ -1,0 +1,7 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="webssh" type="Application" factoryName="Application">
+    <option name="MAIN_CLASS_NAME" value="com.laker.notes.easy.LakerEasyApplication" />
+    <module name="webssh" />
+    <method v="2" />
+  </configuration>
+</component>
