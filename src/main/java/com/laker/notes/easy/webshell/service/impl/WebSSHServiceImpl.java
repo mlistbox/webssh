@@ -69,6 +69,7 @@ public class WebSSHServiceImpl implements WebSSHService {
         ObjectMapper objectMapper = new ObjectMapper();
         WebSSHData webSSHData = null;
         try {
+            logger.info("收到命令:"+buffer);
             webSSHData = objectMapper.readValue(buffer, WebSSHData.class);
         } catch (IOException e) {
             logger.error("Json转换异常");
