@@ -159,6 +159,19 @@ public class WebSSHServiceImpl implements WebSSHService {
             sshMap.remove(userId);
         }
     }
+    @Override
+    public void close(String uuid) {
+        SSHConnectInfo sshConnectInfo = (SSHConnectInfo) sshMap.get(uuid);
+        if (sshConnectInfo != null) {
+            //断开连接
+            if (sshConnectInfo.getChannel() != null) {
+                sshConnectInfo.getChannel().disconnect();
+            }
+
+            //map中移除
+            sshMap.remove(uuid);
+        }
+    }
 
 
     /**

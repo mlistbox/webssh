@@ -45,4 +45,12 @@ public interface WebSSHService {
      * @Date: 2020/3/7
      */
     public void close(WebSocketSession session);
+    /**
+    * @Description: 关闭连接
+    * @Param:
+    * @return:
+    * @Author: NoCortY
+    * @Date: 2020/3/7
+    * */
+    public void close(String uuid);
 }
