@@ -38,6 +38,13 @@ public class SftpServiceImpl implements SftpService {
 
     @Override
     public void connect(HttpSession session, SFTPData sftpData) throws Exception {
+        String vcode= (String)session.getAttribute("vcode");
+        if(!vcode.equals(sftpData.getVcode())) {
+            log.info("验证码错误:{},{}",vcode,sftpData.getVcode());
+            session.setAttribute("login","error");
+            throw new NullPointerException("验证码错误");
+        }
+        session.setAttribute("login","ok");
         SFTPConnectInfo sftpConnectInfo = new SFTPConnectInfo();
         SFTPUtil.getConnect(sftpConnectInfo,sftpData);
         sftpMap.put(session.getId(),sftpConnectInfo);

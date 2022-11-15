@@ -26,6 +26,7 @@ public class WebSocketInterceptor implements HandshakeInterceptor {
             String uuid = UUID.randomUUID().toString().replace("-","");
             //将uuid放到websocketsession中
             map.put(ConstantPool.USER_UUID_KEY, uuid);
+            map.put("vcode",((ServletServerHttpRequest) serverHttpRequest).getServletRequest().getSession().getAttribute("vcode"));
             return true;
         } else {
             return false;

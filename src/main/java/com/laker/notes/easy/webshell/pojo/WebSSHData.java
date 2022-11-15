@@ -14,6 +14,7 @@ public class WebSSHData {
     private String username;
     private String password;
     private String command = "";
+    private String vcode = "";
 
     public String getOperate() {
         return operate;
@@ -61,5 +62,13 @@ public class WebSSHData {
 
     public void setCommand(String command) {
         this.command = command;
+    }
+
+    public String getVcode() {
+        return vcode;
+    }
+
+    public void setVcode(String vcode) {
+        this.vcode = vcode;
     }
 }

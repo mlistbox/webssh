@@ -33,30 +33,41 @@ public class SFTPController {
 
     @PostMapping("/connect")
     public Result connect(HttpSession session, @RequestBody SFTPData sftpData) throws Exception {
-        sftpService.connect(session, sftpData);
+        try {
+            sftpService.connect(session, sftpData);
+        }
+        catch (NullPointerException n)
+        {
+            return Result.fail(n.getCause().toString());
+        }
         return Result.ok();
     }
 
     @PostMapping("/exit")
     public Result disConnect(HttpSession session) throws Exception {
+        if(session.getAttribute("login").equals("error")) return Result.fail();
         sftpService.disConnect(session);
+        session.invalidate();
         return Result.ok();
     }
 
 
     @PostMapping("/ls")
     public Result<List<FileDTO>> listFiles(HttpSession session, String path) throws Exception {
+        if(session.getAttribute("login").equals("error")) return Result.fail();
         return Result.ok(sftpService.listFiles(session, path));
     }
 
     @PostMapping("/put")
     public Result put(HttpSession session, MultipartFile uploadFile, String targetDir) throws Exception {
+        if(session.getAttribute("login").equals("error")) return Result.fail();
         sftpService.put(session, uploadFile, targetDir);
         return Result.ok();
     }
 
     @GetMapping("/get")
     public void get(String fullFileName, HttpSession session, HttpServletResponse response) throws Exception {
+        if(session.getAttribute("login").equals("error")) return;
         String fileName = fullFileName.substring(fullFileName.lastIndexOf("/") + 1);
         //设置下载响应头
         response.setHeader("content-disposition", "attachment;fileName=" + URLEncoder.encode(fileName, "UTF-8"));
@@ -67,6 +78,7 @@ public class SFTPController {
 
     @PostMapping("/delete")
     public Result delete(String fullFileName, HttpSession session) throws Exception {
+        if(session.getAttribute("login").equals("error")) return Result.fail();
         sftpService.delete(session,fullFileName);
         return Result.ok();
     }

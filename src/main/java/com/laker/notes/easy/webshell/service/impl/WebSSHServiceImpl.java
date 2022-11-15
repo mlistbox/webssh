@@ -9,6 +9,7 @@ import com.laker.notes.easy.webshell.constant.ConstantPool;
 import com.laker.notes.easy.webshell.pojo.SSHConnectInfo;
 import com.laker.notes.easy.webshell.pojo.WebSSHData;
 import com.laker.notes.easy.webshell.service.WebSSHService;
+import com.laker.notes.easy.webshell.util.RSAEncrypt;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -18,7 +19,9 @@ import org.springframework.web.socket.WebSocketSession;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.security.NoSuchAlgorithmException;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.Map;
 import java.util.Properties;
 import java.util.concurrent.ConcurrentHashMap;
@@ -69,7 +72,6 @@ public class WebSSHServiceImpl implements WebSSHService {
         ObjectMapper objectMapper = new ObjectMapper();
         WebSSHData webSSHData = null;
         try {
-            logger.info("收到命令:"+buffer);
             webSSHData = objectMapper.readValue(buffer, WebSSHData.class);
         } catch (IOException e) {
             logger.error("Json转换异常");
@@ -77,8 +79,34 @@ public class WebSSHServiceImpl implements WebSSHService {
             return;
         }
         String userId = String.valueOf(session.getAttributes().get(ConstantPool.USER_UUID_KEY));
+
+        //Date vcodetime= session.setAttribute("vcodetime");
         if (ConstantPool.WEBSSH_OPERATE_CONNECT.equals(webSSHData.getOperate())) {
             //找到刚才存储的ssh连接对象
+            try {
+                String vcode=String.valueOf(session.getAttributes().get("vcode"));
+                logger.info("验证码:{}",vcode);
+                if(!vcode.equals(webSSHData.getVcode())) {
+                    logger.info("验证码输入异常");
+                    return;
+                }
+                String presentedPassword = webSSHData.getPassword();
+                //logger.info("提交的password:{}",presentedPassword);
+                presentedPassword = RSAEncrypt.decrypt(presentedPassword, RSAEncrypt.getPrivateKeyString());
+                //logger.info("解密的password:{}",presentedPassword);
+                webSSHData.setPassword(presentedPassword);
+                //session.getAttributes().put("Host","Host:"+webSSHData.getHost().toString());
+            }
+            catch (NoSuchAlgorithmException e1) {
+                logger.error("RSA解密机异常");
+                logger.error("异常信息:{}", e1.getMessage(),e1);
+                return;
+            }
+            catch (Exception e2) {
+                logger.error("其他异常");
+                logger.error("异常信息:{}", e2.getMessage(),e2);
+                return;
+            }
             SSHConnectInfo sshConnectInfo = (SSHConnectInfo) sshMap.get(userId);
             //启动线程异步处理
             WebSSHData finalWebSSHData = webSSHData;

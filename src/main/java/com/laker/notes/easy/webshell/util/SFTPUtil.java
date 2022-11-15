@@ -36,8 +36,16 @@ public class SFTPUtil {
         int port = sftpData.getPort();
         // 用户名
         String username = sftpData.getUsername();
+
+        //String presentedPassword = sftpData.getPassword();
+        //logger.info("提交的password:{}",presentedPassword);
+        //解密
+        sftpData.setPassword(RSAEncrypt.decrypt(sftpData.getPassword(), RSAEncrypt.getPrivateKeyString()));
+        //logger.info("解密的password:{}",presentedPassword);
+        //sftpData.setPassword(presentedPassword);
         // 密码
         String password = sftpData.getPassword();
+
         Channel channel = null;
         JSch jsch = new JSch();
         Session session = jsch.getSession(username, host, port);

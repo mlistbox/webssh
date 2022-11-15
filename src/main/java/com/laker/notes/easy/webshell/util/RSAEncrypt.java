@@ -44,7 +44,7 @@ public class RSAEncrypt {
             genKeyPair();
         } catch (NoSuchAlgorithmException e) {
             // TODO Auto-generated catch block
-            e.printStackTrace();
+            log.error(e.getMessage()+":{}",e);
         }
     }
 

@@ -14,7 +14,24 @@ spring:
   mvc:
     servlet:
       path: /
-    view:
-      prefix: /page/
-      suffix: .html
+    static-path-pattern: /**
+    #view:
+      #prefix: /page/
+      #suffix: .html
+  thymeleaf:
+    # 配置视图路径前缀
+    prefix: classpath:/static/page/
+    # 配置视图路径后缀
+    suffix: .html
+    mode: html
+    # 关闭缓存 修改视图 刷新浏览器就显示 开发阶段务必关闭缓存 (=false)
+    cache: false
+checkingcode:
+  disturblinenumber: 200
+  disturbcolorstar: 160
+  disturbcolorend: 220
+  codecolorstar: 20
+  codecolorend: 110
+  codespin: 45
+  vcodetype: 1
 
