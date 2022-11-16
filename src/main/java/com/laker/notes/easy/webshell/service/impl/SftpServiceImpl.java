@@ -44,6 +44,7 @@ public class SftpServiceImpl implements SftpService {
             session.setAttribute("login","error");
             throw new NullPointerException("验证码错误");
         }
+        log.info("登录用户:{};登录时IP:{}",session.getId(),sftpData.getIp());
         session.setAttribute("login","ok");
         SFTPConnectInfo sftpConnectInfo = new SFTPConnectInfo();
         SFTPUtil.getConnect(sftpConnectInfo,sftpData);

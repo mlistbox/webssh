@@ -1,6 +1,7 @@
 package com.laker.notes.easy.websocket;
 
 import com.laker.notes.easy.webshell.constant.ConstantPool;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.server.ServerHttpRequest;
 import org.springframework.http.server.ServerHttpResponse;
 import org.springframework.http.server.ServletServerHttpRequest;
@@ -9,7 +10,7 @@ import org.springframework.web.socket.server.HandshakeInterceptor;
 
 import java.util.Map;
 import java.util.UUID;
-
+@Slf4j
 public class WebSocketInterceptor implements HandshakeInterceptor {
     /**
      * @Description: Handler处理前调用
@@ -27,6 +28,7 @@ public class WebSocketInterceptor implements HandshakeInterceptor {
             //将uuid放到websocketsession中
             map.put(ConstantPool.USER_UUID_KEY, uuid);
             request.getServletRequest().getSession().setAttribute("uuid",uuid);
+            log.info("登录用户:{};登录时IP:{}",uuid,request.getRemoteAddress());
             map.put("vcode",request.getServletRequest().getSession().getAttribute("vcode"));
             return true;
         } else {

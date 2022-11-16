@@ -16,4 +16,5 @@ public class SFTPData {
     private String username;
     private String password;
     private String vcode = "";
+    private String ip="";
 }

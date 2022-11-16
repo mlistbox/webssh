@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.ServletOutputStream;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.InputStream;
@@ -32,8 +33,10 @@ public class SFTPController {
     SftpService sftpService;
 
     @PostMapping("/connect")
-    public Result connect(HttpSession session, @RequestBody SFTPData sftpData) throws Exception {
+    public Result connect(HttpSession session, HttpServletRequest request, @RequestBody SFTPData sftpData) throws Exception {
         try {
+            //if(session.getAttribute("uuid")!=null) log.info("登录用户:{};登录时IP:{}",session.getAttribute("uuid"),request.getRemoteAddr());
+            sftpData.setIp(request.getRemoteAddr());
             sftpService.connect(session, sftpData);
         }
         catch (NullPointerException n)
@@ -45,7 +48,7 @@ public class SFTPController {
 
     @PostMapping("/exit")
     public Result disConnect(HttpSession session) throws Exception {
-        if(session.getAttribute("login").equals("error")) return Result.fail();
+        if(session.getAttribute("login")==null || session.getAttribute("login").equals("error")) return Result.fail();
         sftpService.disConnect(session);
         session.invalidate();
         return Result.ok();
