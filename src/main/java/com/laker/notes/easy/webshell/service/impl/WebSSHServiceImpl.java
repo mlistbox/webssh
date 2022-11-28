@@ -1,10 +1,7 @@
 package com.laker.notes.easy.webshell.service.impl;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.jcraft.jsch.Channel;
-import com.jcraft.jsch.JSch;
-import com.jcraft.jsch.JSchException;
-import com.jcraft.jsch.Session;
+import com.jcraft.jsch.*;
 import com.laker.notes.easy.webshell.constant.ConstantPool;
 import com.laker.notes.easy.webshell.pojo.SSHConnectInfo;
 import com.laker.notes.easy.webshell.pojo.WebSSHData;
@@ -192,11 +189,11 @@ public class WebSSHServiceImpl implements WebSSHService {
         session.setPassword(webSSHData.getPassword());
         //连接  超时时间30s
         session.connect(30000);
-
         //开启shell通道
-        Channel channel = session.openChannel("shell");
-
+        ChannelShell channel = (ChannelShell)session.openChannel("shell");
+        //ChannelShell channelShell= new ChannelShell();
         //通道连接 超时时间3s
+        channel.setPtyType("xterm",200,70,1920,1080);
         channel.connect(3000);
 
         //设置channel
