@@ -193,7 +193,8 @@ public class WebSSHServiceImpl implements WebSSHService {
         ChannelShell channel = (ChannelShell)session.openChannel("shell");
         //ChannelShell channelShell= new ChannelShell();
         //通道连接 超时时间3s
-        channel.setPtyType("xterm",200,70,1920,1080);
+        logger.info("{}*{}",webSSHData.getWidth(),(int)(Double.valueOf(webSSHData.getHeight())*.95));
+        channel.setPtyType("xterm",200,50,Integer.valueOf(webSSHData.getWidth()),(int)(Double.valueOf(webSSHData.getHeight())*.95));
         channel.connect(3000);
 
         //设置channel

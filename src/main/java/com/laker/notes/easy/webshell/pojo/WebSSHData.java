@@ -15,6 +15,8 @@ public class WebSSHData {
     private String password;
     private String command = "";
     private String vcode = "";
+    private String height="";
+    private String width="";
 
     public String getOperate() {
         return operate;
@@ -70,5 +72,21 @@ public class WebSSHData {
 
     public void setVcode(String vcode) {
         this.vcode = vcode;
+    }
+
+    public String getHeight() {
+        return height;
+    }
+
+    public void setHeight(String height) {
+        this.height = height;
+    }
+
+    public String getWidth() {
+        return width;
+    }
+
+    public void setWidth(String width) {
+        this.width = width;
     }
 }
